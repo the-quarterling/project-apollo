@@ -5,15 +5,22 @@ import { useState, useEffect } from 'react';
 interface ScorecardRow {
     target: number,
     col: number,
-    prevTotal: number,
     updated: (rowValues:any ) => void,
-    getRunningTotal: (score:number) => void
+    getPreviousScores: (target: number) => number
 };
 
-export default function ScorecardRow({target, col, prevTotal, updated, getRunningTotal}: ScorecardRow) {
+export default function ScorecardRow({target, col, updated, getPreviousScores}: ScorecardRow) {
     const [arrow, setArrow] = useState<number>(0);
     const [score, setScore] = useState<number>(0);
     const [spot, setSpot] = useState<boolean>(false);
+    const [total, setTotal] = useState<number>(0);
+    const [form, setForm] = useState<any>({
+        'col': col, 
+        'target': target, 
+        'arrow': arrow, 
+        'score': score, 
+        'spot': spot
+    });
 
     const handleArrowChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
         setArrow(parseInt(e.target.value));
@@ -28,6 +35,11 @@ export default function ScorecardRow({target, col, prevTotal, updated, getRunnin
         setSpot(e.target.checked);
     }
 
+    const handleFormUpdate = (e: any) => {
+        const checkedValue = e.target.name == "spot" ? e.target.checked  : e.target.value
+        setForm({...form, [e.target.name]: checkedValue })
+    }
+
     const updateScorecard = () => {
         const rowValues = {
             'col': col, 
@@ -36,31 +48,66 @@ export default function ScorecardRow({target, col, prevTotal, updated, getRunnin
             'score': score, 
             'spot': spot
         }
-        getRunningTotal(score)
         updated(rowValues);
     }
 
     useEffect(() => {
         updateScorecard()
-    },[arrow, score, spot]);
+        setTotal(getPreviousScores(form));
+    },[form]);
 
     return (
-        <tr className="text-center">
-            <td className="border w-20 text-lg">
-                {target}
-            </td>
-            <td className="border">
-                <input className="w-24 h-24 text-center" type="number" min="0" onChange={handleArrowChange}></input>
-            </td>
-            <td className="border">
-                <input className="w-24 h-24 text-center" type="number" onChange={handleScoreChange}></input>
-            </td>
-            <td className="border w-20">
-                <input type="checkbox" onChange={handleSpotChange}></input>
-            </td>
-            <td className="border w-20">
-                {prevTotal}
-            </td>
-        </tr>
+        <div >
+            {
+                target == 1 ? (             
+                    <div className="flex flex-row text-center py-4">
+                        <div>
+                            <div className="-rotate-45 w-20">
+                                Target
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-rotate-45 w-20">
+                                Arrow
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-rotate-45 w-20">
+                                Score
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-rotate-45 w-20">
+                                Spot
+                            </div>
+                        </div>
+                        <div>
+                            <div className="-rotate-45 w-20">
+                                Total
+                            </div>
+                        </div>
+                    </div>
+                ) : ('')
+            }
+
+            <form onChange={handleFormUpdate} className="flex flex-row">
+                <div className="border w-20 h-20 text-center place-content-center">
+                    {target}
+                </div>
+                <div className="border w-20 h-20 text-center place-content-center">
+                    <input className="text-center w-20 h-20" name="arrow" type="number" min="0" onChange={handleArrowChange}></input>
+                </div>
+                <div className="border w-20 h-20 text-center place-content-center">
+                    <input className="text-center w-20 h-20" name="score" type="number" onChange={handleScoreChange}></input>
+                </div>
+                <div className="border w-20 h-20 text-center place-content-center">
+                    <input type="checkbox" name="spot" onChange={handleSpotChange}></input>
+                </div>
+                <div className="border w-20 h-20 text-center place-content-center">
+                    {total}
+                </div>
+            </form>
+        </div>
+  
     );
 }
