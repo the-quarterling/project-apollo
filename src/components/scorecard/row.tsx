@@ -59,7 +59,7 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
     return (
         <div >
             {
-                target == 1 ? (             
+                target == 1 && (             
                     <div className="flex flex-row text-center py-4">
                         <div>
                             <div className="-rotate-45 w-20">
@@ -87,7 +87,7 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
                             </div>
                         </div>
                     </div>
-                ) : ('')
+                )
             }
 
             <form onChange={handleFormUpdate} className="flex flex-row">
