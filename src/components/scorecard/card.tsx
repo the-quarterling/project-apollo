@@ -1,7 +1,7 @@
 "use client";
 
 import ScorecardStats from "@/components/scorecard/stats";
-import { useScorecardProvider } from "@/app/providers/scorecardProvider"
+import { useScorecardProvider } from "@/providers/ScorecardProvider"
 import { ScorecardTable } from "@/components/scorecard/table";
 
 export default function Card() {
@@ -23,7 +23,7 @@ const {noOfTargetsTemp, noOfTargets, setNoOfTargets, setNoOfTargetsTemp} = useSc
             <label className="input input-bordered items-center gap-2 py-2 my-4 grid-cols-6">
                 No of targets:
                 <input type="number" 
-                      min="1"
+                      min="0"
                       value={noOfTargetsTemp}
                       onChange={handleInputChange}
                 />

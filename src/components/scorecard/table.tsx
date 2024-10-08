@@ -1,6 +1,6 @@
 import ScorecardRow from "@/components/scorecard/row";
 import { useState, useEffect } from 'react';
-import { useScorecardProvider } from "@/app/providers/scorecardProvider";
+import { useScorecardProvider } from "@/providers/ScorecardProvider"
 
 interface scorecardRowNumber {
     noOfRows: number
@@ -18,6 +18,7 @@ interface TargetRowProps {
 export const ScorecardTable = ({noOfRows}: scorecardRowNumber) => {
     const col1: Array<TargetRowProps> = [];
     const col2: Array<TargetRowProps> = [];
+
     const [total, setTotal] = useState<number>(0);
 
     const calculateRowsPerCol = () => {

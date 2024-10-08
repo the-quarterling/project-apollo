@@ -17,24 +17,51 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
     const [column1, setColumn1] = useState<Array<TargetRowProps>>([]);
     const [column2, setColumn2] = useState<Array<TargetRowProps>>([]);
 
+    const calculateRowsPerCol = () => {
+        if(noOfTargets % 2 == 0) {
+            return noOfTargets / 2
+        } else {
+            return Math.ceil(noOfTargets / 2)
+        };
+    };
+
     const updateColumns = () => {
+
+        const rows1 = calculateRowsPerCol();
+        const rows2 = noOfTargets - rows1;
+
+        const tempCol1 = [];
+        const tempCol2 = [];
+
+        for (let i=0; i < rows1; i++) {
+            tempCol1.push({'col': 1, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, total: 0});
+        }
+    
+        for (let i=0; i < rows2; i++) {
+            tempCol2.push({'col': 2, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, total: 0});
+        }
+
+        setColumn1(tempCol1);
+        setColumn2(tempCol2);
         
+        console.log(1, rows1, tempCol1, column1);
+        console.log(2, rows2, tempCol2, column2);
     }
 
-    const handleColumn1Update = () => {}
-    const handleColumn2Update = () => {}
+    // const handleColumn1Update = () => {}
+    // const handleColumn2Update = () => {}
 
     useEffect(() => {
-        console.log('noOfTargets', noOfTargets);
+        updateColumns();
     },[noOfTargets]);
 
-    useEffect(() => {
-        handleColumn1Update()
-    },[column1]);
+    // useEffect(() => {
+    //     handleColumn1Update()
+    // },[column1]);
 
-    useEffect(() => {
-        handleColumn2Update()
-    },[column2]);
+    // useEffect(() => {
+    //     handleColumn2Update()
+    // },[column2]);
 
     return (
         <ScorecardContext.Provider
@@ -52,8 +79,6 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
             {children}
         </ScorecardContext.Provider>
     );
-
-
 };
 
 
