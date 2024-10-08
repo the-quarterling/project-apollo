@@ -1,4 +1,6 @@
 import ScorecardRow from "@/components/scorecard/row";
+import { useState, useEffect } from 'react';
+import { useScorecardProvider } from "@/app/providers/scorecardProvider";
 
 interface scorecardRowNumber {
     noOfRows: number
@@ -16,6 +18,7 @@ interface TargetRowProps {
 export const ScorecardTable = ({noOfRows}: scorecardRowNumber) => {
     const col1: Array<TargetRowProps> = [];
     const col2: Array<TargetRowProps> = [];
+    const [total, setTotal] = useState<number>(0);
 
     const calculateRowsPerCol = () => {
         if(noOfRows % 2 == 0) {
@@ -43,6 +46,7 @@ export const ScorecardTable = ({noOfRows}: scorecardRowNumber) => {
         return total;
     }
 
+
     const updateScorecard = (rowValues: any) => {
         const col = rowValues.col == 1 ? col1 : col2 ; 
         const idx = col.findIndex((element) => rowValues.target == element.target);
@@ -62,14 +66,14 @@ export const ScorecardTable = ({noOfRows}: scorecardRowNumber) => {
     }
 
     return (
-        <div className="flex flex-column gap-4 justify-center">
-            <div className="grid grid-rows-1">
+        <div className="w-auto max-w-[90%] m-auto bg-white dark:bg-zinc-900 rounded-2xl grid grid-cols-1 md:grid-cols-2 justify-content-center shadow-lg dark:shadow-stone-100/15">
+            <div className="m-auto">
                 {col1.map((target, index) => (
-                    <ScorecardRow key={`col-1-${index}`} target={target.target} col={1} updated={updateScorecard} getPreviousScores={getPreviousTotal}/>
+                    <ScorecardRow key={`col-1-${index}-$`} target={target.target} col={1} updated={updateScorecard} getPreviousScores={getPreviousTotal}/>                    
                 ))}  
             </div>
 
-            <div className="grid grid-rows-1">
+            <div className="">
                 {col2.map((target, index) => (
                     <ScorecardRow key={`col-2-${index}`} target={target.target} col={2} updated={updateScorecard} getPreviousScores={getPreviousTotal}/>
                 ))}  
