@@ -16,7 +16,7 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
     const [total, setTotal] = useState<number>(0);
     const [form, setForm] = useState<any>({
         'col': col, 
-        'target': target, 
+        'target': target,  
         'arrow': arrow, 
         'score': score, 
         'spot': spot
@@ -57,40 +57,39 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
     },[form]);
 
     return (
-        <div >
+        <div>
             {
                 target == 1 && (             
-                    <div className="flex flex-row text-center py-4">
-                        <div>
-                            <div className="-rotate-45 w-20">
+                    <div className="flex flex-row text-center py-6">
+                        <div className="w-20">
+                            <div className="-rotate-45">
                                 Target
                             </div>
                         </div>
-                        <div>
-                            <div className="-rotate-45 w-20">
+                        <div className="w-20">
+                            <div className="-rotate-45">
                                 Arrow
                             </div>
                         </div>
-                        <div>
-                            <div className="-rotate-45 w-20">
+                        <div className="w-20">
+                            <div className="-rotate-45">
                                 Score
                             </div>
                         </div>
-                        <div>
-                            <div className="-rotate-45 w-20">
+                        <div className="w-20">
+                            <div className="-rotate-45">
                                 Spot
                             </div>
                         </div>
-                        <div>
-                            <div className="-rotate-45 w-20">
+                        <div className="w-20">
+                            <div className="-rotate-45">
                                 Total
                             </div>
                         </div>
                     </div>
                 )
             }
-
-            <form onChange={handleFormUpdate} className="flex flex-row">
+            <form onChange={handleFormUpdate} className="flex flex-column">
                 <div className="border w-20 h-20 text-center place-content-center">
                     {target}
                 </div>
