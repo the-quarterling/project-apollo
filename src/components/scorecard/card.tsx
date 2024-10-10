@@ -38,7 +38,7 @@ const {noOfTargetsTemp, noOfTargets, setNoOfTargets, setNoOfTargetsTemp} = useSc
 
           <ScorecardStats />
   
-          <ScorecardTable noOfRows={noOfTargets} />
+          <ScorecardTable />
         </main>
   );
 }

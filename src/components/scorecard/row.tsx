@@ -16,7 +16,7 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
     const [total, setTotal] = useState<number>(0);
     const [form, setForm] = useState<any>({
         'col': col, 
-        'target': target, 
+        'target': target,  
         'arrow': arrow, 
         'score': score, 
         'spot': spot

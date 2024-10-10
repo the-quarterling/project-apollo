@@ -5,8 +5,7 @@ interface TargetRowProps {
     target: number,
     arrow: number,
     score: number,
-    spot: boolean,
-    total: number
+    spot: boolean
 };
 
 const ScorecardContext = createContext<any>(undefined);
@@ -14,8 +13,16 @@ const ScorecardContext = createContext<any>(undefined);
 const ScorecardProvider: React.FC<any> = ({ children }) => {
     const [noOfTargetsTemp, setNoOfTargetsTemp] = useState<number>(40);
     const [noOfTargets, setNoOfTargets] = useState<number>(40);
+
+
     const [column1, setColumn1] = useState<Array<TargetRowProps>>([]);
     const [column2, setColumn2] = useState<Array<TargetRowProps>>([]);
+    const [col1Total, setCol1Total] = useState<number>(0);
+    const [col2Total, setCol2Total] = useState<number>(0);
+    const [col1Spots, setCol1Spots] = useState<number>(0);
+    const [col2Spots, setCol2Spots] = useState<number>(0);
+    const [fullTotal, setFullTotal] = useState<number>(0);
+    const [noOfSpots, setNoOfSpots] = useState<number>(0);
 
     const calculateRowsPerCol = () => {
         if(noOfTargets % 2 == 0) {
@@ -25,8 +32,16 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
         };
     };
 
-    const updateColumns = () => {
+    const updateScorecard = (rowValues: any) => {
+        const col = rowValues.col == 1 ? column1 : column2;
+        const idx = col.findIndex((element: TargetRowProps) => rowValues.target == element.target);
 
+        col[idx] = rowValues
+        console.log('updateScorecard', rowValues);
+        rowValues.col == 1 ?  setColumn1([...col]) : setColumn2([...col]);
+    }
+
+    const updateColumns = () => {
         const rows1 = calculateRowsPerCol();
         const rows2 = noOfTargets - rows1;
 
@@ -34,34 +49,47 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
         const tempCol2 = [];
 
         for (let i=0; i < rows1; i++) {
-            tempCol1.push({'col': 1, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, total: 0});
+            tempCol1.push({'col': 1, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false});
         }
     
         for (let i=0; i < rows2; i++) {
-            tempCol2.push({'col': 2, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, total: 0});
+            tempCol2.push({'col': 2, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false});
         }
 
         setColumn1(tempCol1);
         setColumn2(tempCol2);
-        
-        console.log(1, rows1, tempCol1, column1);
-        console.log(2, rows2, tempCol2, column2);
     }
 
-    // const handleColumn1Update = () => {}
-    // const handleColumn2Update = () => {}
+    const handleColumn1Update = () => {
+        setCol1Total(column1.reduce(function (acc, obj) { return acc + obj.score; }, 0));
+        setCol1Spots(column1.filter(i => (i.spot)).length);
+    }
+
+    const handleColumn2Update = () => {
+        setCol2Total(column2.reduce(function (acc, obj) { return acc + obj.score; }, 0));   
+        setCol2Spots(column2.filter(i => (i.spot)).length);
+    }
+
+    const handleTotalChange = () => {
+        setFullTotal(col1Total + col2Total);
+        setNoOfSpots(col1Spots + col2Spots);
+    }
 
     useEffect(() => {
         updateColumns();
     },[noOfTargets]);
 
-    // useEffect(() => {
-    //     handleColumn1Update()
-    // },[column1]);
+    useEffect(() => {
+        handleColumn1Update()
+    },[column1]);
 
-    // useEffect(() => {
-    //     handleColumn2Update()
-    // },[column2]);
+    useEffect(() => {
+        handleColumn2Update()
+    },[column2]);
+
+    useEffect(() => {
+        handleTotalChange()
+    },[col1Total, col2Total, col1Spots, col2Spots]);
 
     return (
         <ScorecardContext.Provider
@@ -70,24 +98,21 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
                 setNoOfTargetsTemp,
                 noOfTargets,
                 setNoOfTargets,
+                noOfSpots,
                 column1, 
                 setColumn1,
+                col1Total,
                 column2,
-                setColumn2
+                setColumn2,
+                col2Total,
+                fullTotal,
+                updateScorecard
             }}
         >
             {children}
         </ScorecardContext.Provider>
     );
 };
-
-
-// [
-//     {'col': 1, 'target': 1, 'arrow': 0, 'score': 0, 'spot': false, total: 0},
-//     {'col': 1, 'target': 2, 'arrow': 0, 'score': 0, 'spot': false, total: 0},
-//     {'col': 1, 'target': 3, 'arrow': 0, 'score': 0, 'spot': false, total: 0},
-//     {'col': 1, 'target':4, 'arrow': 0, 'score': 0, 'spot': false, total: 0}
-// ]
 
 const useScorecardProvider = () => {
     const context = useContext(ScorecardContext);
