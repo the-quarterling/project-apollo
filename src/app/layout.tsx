@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Field Point",
-  description: "Field point archery scoring system",
+  title: "Arrolytitcs",
+  description: "Field archery analytics",
 };
 
 export default function RootLayout({
