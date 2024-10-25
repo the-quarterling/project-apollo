@@ -7,12 +7,12 @@ import { ScorecardTable } from "@/components/scorecard/table";
 export default function Card() {
 
   return (
-        <main>
+        <>
           <ScorecardDetails />
 
           <ScorecardStats />
   
           <ScorecardTable />
-        </main>
+        </>
   );
 }

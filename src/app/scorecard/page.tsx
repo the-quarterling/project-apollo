@@ -1,28 +1,17 @@
 "use client";
 
-import { useScorecardProvider } from "@/providers/ScorecardProvider"
+import Link from "next/link";
+import { useScorecardCardStore } from "@/app/scorecard/store";
 
 export default function ScorecardStats()  {
 
-  const { noOfTargetsTemp, 
-          setNoOfTargets, 
-          setNoOfTargetsTemp, 
-          setSociety, 
-          setCourse,
-          setCategory, 
-          setBowstyle, 
-          setDate,
-        } = useScorecardProvider();
+  const setSociety = useScorecardCardStore((state:any) => state.setSociety);
+  const setCourse = useScorecardCardStore((state:any) => state.setCourse);
+  const setCategory = useScorecardCardStore((state:any) => state.setCategory);
+  const setBowstyle = useScorecardCardStore((state:any) => state.setBowstyle);
+  const setDate = useScorecardCardStore((state:any) => state.setDate);
+  const setTargets = useScorecardCardStore((state:any) => state.setTargets);
 
-  const handleTargetInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const tempValue = e.target.value == "" ? 0 : parseInt(e.target.value)
-    setNoOfTargetsTemp(tempValue);
-  };
-
-  const updateCard = () => {
-    setNoOfTargets(noOfTargetsTemp);
-  };
-  
   return (
     <div className="w-auto max-w-[90%] m-auto py-8 bg-white dark:bg-zinc-900 rounded-2xl justify-center shadow-lg text-center dark:shadow-stone-100/15">
       <div className="flex-wrap px-7 my-5 justify-center flex">
@@ -49,25 +38,14 @@ export default function ScorecardStats()  {
         <div className="me-4 py-4">
           <label htmlFor="targets" className="block mb-2 text-sm text-center font-medium text-slate-900 dark:text-slate-100">Number of targets</label>
 
-          <button onClick={() => setNoOfTargetsTemp(noOfTargetsTemp - 1)} className="text-3xl px-6">
-            -
-            <span className="sr-only">Remove target</span>
-          </button>
-
           <div className="inline-flex w-20 h-20 items-center justify-center bg-teal-300 rounded-full">
             <input type="number" 
                     id="targets"
                     className="w-20 h-20 text-center text-2xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                     min="0"
-                    value={noOfTargetsTemp}
-                    onChange={handleTargetInputChange}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTargets(event.target.value)}
             />
           </div>
-
-          <button onClick={() => setNoOfTargetsTemp(noOfTargetsTemp + 1)} className="text-3xl px-6">
-            +
-            <span className="sr-only">Add target</span>
-          </button>
         </div>
       </div>
 
@@ -78,9 +56,9 @@ export default function ScorecardStats()  {
                  className="input input-bordered"
                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setCategory(event.target.value)} 
           >
-            <option value="gents">Gents</option>
-            <option value="ladies">Ladies</option>
-            <option value="other">Other</option>
+            <option value="Gents">Gents</option>
+            <option value="Ladies">Ladies</option>
+            <option value="Other">Other</option>
       b      </select>
         </div>
 
@@ -106,9 +84,9 @@ export default function ScorecardStats()  {
       </div>
 
       <div className="flex-wrap px-7 my-5 justify-center flex">
-          <button className="btn btn-primary rounded-3xl" onClick={updateCard}>
+          <Link className="btn btn-primary rounded-3xl" href="/scorecard/card">
             Update card
-          </button>
+          </Link>
       </div>
     </div>
 
