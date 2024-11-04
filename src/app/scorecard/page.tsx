@@ -10,7 +10,7 @@ export default function ScorecardStats()  {
   const setCategory = useScorecardCardStore((state:any) => state.setCategory);
   const setBowstyle = useScorecardCardStore((state:any) => state.setBowstyle);
   const setDate = useScorecardCardStore((state:any) => state.setDate);
-  const setTargets = useScorecardCardStore((state:any) => state.setTargets);
+  const setNoTargets = useScorecardCardStore((state:any) => state.setNoTargets);
 
   return (
     <div className="w-auto max-w-[90%] m-auto py-8 bg-white dark:bg-zinc-900 rounded-2xl justify-center shadow-lg text-center dark:shadow-stone-100/15">
@@ -43,7 +43,7 @@ export default function ScorecardStats()  {
                     id="targets"
                     className="w-20 h-20 text-center text-2xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                     min="0"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setTargets(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNoTargets(event.target.value)}
             />
           </div>
         </div>
