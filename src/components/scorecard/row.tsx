@@ -61,27 +61,27 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
             {
                 target == 1 && (             
                     <div className="flex flex-row text-center py-6">
-                        <div className="w-20">
+                        <div className="w-1/5">
                             <div className="-rotate-45">
                                 Target
                             </div>
                         </div>
-                        <div className="w-20">
+                        <div className="w-1/5">
                             <div className="-rotate-45">
                                 Arrow
                             </div>
                         </div>
-                        <div className="w-20">
+                        <div className="w-1/5">
                             <div className="-rotate-45">
                                 Score
                             </div>
                         </div>
-                        <div className="w-20">
+                        <div className="w-1/5">
                             <div className="-rotate-45">
                                 Spot
                             </div>
                         </div>
-                        <div className="w-20">
+                        <div className="w-1/5">
                             <div className="-rotate-45">
                                 Total
                             </div>
@@ -90,19 +90,19 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
                 )
             }
             <form onChange={handleFormUpdate} className="flex flex-column">
-                <div className="border w-20 h-20 text-center place-content-center">
+                <div className="border w-1/5 h-20 text-center place-content-center">
                     {target}
                 </div>
-                <div className="border w-20 h-20 text-center place-content-center">
-                    <input className="text-center w-20 h-20" name="arrow" type="number" min="0" onChange={handleArrowChange}></input>
+                <div className="border w-1/5 h-20 text-center place-content-center">
+                    <input className="text-center w-full h-20" name="arrow" type="number" min="0" onChange={handleArrowChange}></input>
                 </div>
-                <div className="border w-20 h-20 text-center place-content-center">
-                    <input className="text-center w-20 h-20" name="score" type="number" onChange={handleScoreChange}></input>
+                <div className="border w-1/5 h-20 text-center place-content-center">
+                    <input className="text-center w-full h-20" name="score" type="number" onChange={handleScoreChange}></input>
                 </div>
-                <div className="border w-20 h-20 text-center place-content-center">
+                <div className="border w-1/5 h-20 text-center place-content-center">
                     <input type="checkbox" name="spot" onChange={handleSpotChange}></input>
                 </div>
-                <div className="border w-20 h-20 text-center place-content-center">
+                <div className="border w-1/5 h-20 text-center place-content-center">
                     {total}
                 </div>
             </form>

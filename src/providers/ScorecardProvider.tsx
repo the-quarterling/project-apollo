@@ -14,15 +14,22 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
     const [noOfTargetsTemp, setNoOfTargetsTemp] = useState<number>(40);
     const [noOfTargets, setNoOfTargets] = useState<number>(40);
 
-
     const [column1, setColumn1] = useState<Array<TargetRowProps>>([]);
     const [column2, setColumn2] = useState<Array<TargetRowProps>>([]);
+
     const [col1Total, setCol1Total] = useState<number>(0);
     const [col2Total, setCol2Total] = useState<number>(0);
+    const [fullTotal, setFullTotal] = useState<number>(0);
+
     const [col1Spots, setCol1Spots] = useState<number>(0);
     const [col2Spots, setCol2Spots] = useState<number>(0);
-    const [fullTotal, setFullTotal] = useState<number>(0);
     const [noOfSpots, setNoOfSpots] = useState<number>(0);
+
+    const [society, setSociety] = useState<string>('');
+    const [course, setCourse] = useState<string>('');
+    const [category, setCategory] = useState<string>('gents');
+    const [bowstyle, setBowstyle] = useState<string>('');
+    const [date, setDate] = useState<Date>()
 
     const calculateRowsPerCol = () => {
         if(noOfTargets % 2 == 0) {
@@ -36,8 +43,7 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
         const col = rowValues.col == 1 ? column1 : column2;
         const idx = col.findIndex((element: TargetRowProps) => rowValues.target == element.target);
 
-        col[idx] = rowValues
-        console.log('updateScorecard', rowValues);
+        col[idx] = rowValues;
         rowValues.col == 1 ?  setColumn1([...col]) : setColumn2([...col]);
     }
 
@@ -106,7 +112,17 @@ const ScorecardProvider: React.FC<any> = ({ children }) => {
                 setColumn2,
                 col2Total,
                 fullTotal,
-                updateScorecard
+                updateScorecard,
+                society,
+                setSociety, 
+                course, 
+                setCourse,
+                category, 
+                setCategory, 
+                bowstyle, 
+                setBowstyle, 
+                date, 
+                setDate
             }}
         >
             {children}
