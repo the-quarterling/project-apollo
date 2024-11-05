@@ -25,7 +25,6 @@ const calculateColums = (targets:number) => {
     for (let i=0; i < col2Length; i++) {
         tempCol2.push({'col': 2, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false});
     }
-    console.log(tempCol1, tempCol2);
 
     return {'col1': tempCol1, 'col2': tempCol2 }
 }
