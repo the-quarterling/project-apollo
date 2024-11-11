@@ -8,11 +8,11 @@ export default function ScorecardDetails()  {
   const date = useScorecardCardStore((state:any) => state.date);
 
   return (
-      <div className="text-gray-200 px-7 my-5 ">
+      <div className="px-7 my-5 text-white">
         <div className="text-3xl">
           {society}: {course}
         </div>
-        <div className='py-2'>
+        <div className='py-2 text-xl'>
           {category} {bowstyle}
         </div>
         <div>

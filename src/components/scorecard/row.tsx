@@ -1,60 +1,68 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useScorecardCardStore } from "@/app/scorecard/store";
 
 interface ScorecardRow {
     target: number,
-    col: number,
-    updated: (rowValues:any ) => void,
-    getPreviousScores: (target: number) => number
+    col: number
 };
 
-export default function ScorecardRow({target, col, updated, getPreviousScores}: ScorecardRow) {
-    const [arrow, setArrow] = useState<number>(0);
-    const [score, setScore] = useState<number>(0);
-    const [spot, setSpot] = useState<boolean>(false);
-    const [total, setTotal] = useState<number>(0);
-    const [form, setForm] = useState<any>({
-        'col': col, 
-        'target': target,  
-        'arrow': arrow, 
-        'score': score, 
-        'spot': spot
-    });
+interface TargetRowProps {
+    col: number,
+    target: number,
+    arrow: number,
+    score: number,
+    spot: boolean
+};
 
-    const handleArrowChange = (e: React.ChangeEvent<HTMLInputElement>) =>  {
-        setArrow(parseInt(e.target.value));
-    };
+export default function ScorecardRow({target, col}: ScorecardRow) {
+    const scorecard = useScorecardCardStore((state:any) => state.scorecard)
+    const firstHalfScore = useScorecardCardStore((state: any) => state.firstHalfScore);
+    const setScorecard = useScorecardCardStore((state:any) => state.setScorecard);
 
-    const handleScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = !e.target.value ? 0 : parseInt(e.target.value)
-        setScore((value));
-    }
+    // calculate row we are editing
+    const rowIndex = scorecard.findIndex((a:TargetRowProps) => (a.target === target && a.col === col));
 
-    const handleSpotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSpot(e.target.checked);
-    }
+    // //get values from zustand store
+    const arrow = scorecard[rowIndex].arrow;
+    const score = scorecard[rowIndex].score;
+    const spot = scorecard[rowIndex].spot;
 
-    const handleFormUpdate = (e: any) => {
-        const checkedValue = e.target.name == "spot" ? e.target.checked  : e.target.value
-        setForm({...form, [e.target.name]: checkedValue })
-    }
 
-    const updateScorecard = () => {
-        const rowValues = {
-            'col': col, 
-            'target': target, 
-            'arrow': arrow, 
-            'score': score, 
-            'spot': spot
+    const calculateRunningTotal = () => {
+        const tempArray = []
+        let total;
+
+        for (let i = 0; i <= rowIndex; i++) {
+            tempArray.push(
+               scorecard[i].score
+            )
         }
-        updated(rowValues);
+        
+
+        total = tempArray.reduce((acc, current) => {
+            return current + acc;
+        }, 0)
+
+        return col === 1 ? total : total - firstHalfScore;
     }
 
-    useEffect(() => {
-        updateScorecard()
-        setTotal(getPreviousScores(form));
-    },[form]);
+    const total = calculateRunningTotal();
+
+    const handleArrowUpdate = (event:string) => {
+        scorecard[rowIndex].arrow = parseInt(event);
+        setScorecard(scorecard);    
+    }
+
+    const handleScoreUpdate = (event:string) => {
+        scorecard[rowIndex].score = parseInt(event);
+        setScorecard(scorecard);
+    }
+
+    const handleSpotUpdate = (event:boolean) => {
+        scorecard[rowIndex].spot = event;
+        setScorecard(scorecard);    
+    }
 
     return (
         <div>
@@ -89,24 +97,41 @@ export default function ScorecardRow({target, col, updated, getPreviousScores}: 
                     </div>
                 )
             }
-            <form onChange={handleFormUpdate} className="flex flex-column">
+            <form className="flex flex-column">
                 <div className="border w-1/5 h-20 text-center place-content-center">
                     {target}
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                    <input className="text-center w-full h-20" name="arrow" type="number" min="0" onChange={handleArrowChange}></input>
+                
+                    <input className="text-center w-full h-20" 
+                           name="arrow" 
+                           type="number" 
+                           min="1"
+                           defaultValue={arrow}
+                           onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleArrowUpdate(event.target.value)}
+                    ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                    <input className="text-center w-full h-20" name="score" type="number" onChange={handleScoreChange}></input>
+                    <input className="text-center w-full h-20" 
+                           name="score" 
+                           type="number"
+                           defaultValue={score}
+                           onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleScoreUpdate(event.target.value)}
+                    ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                    <input type="checkbox" name="spot" onChange={handleSpotChange}></input>
+                    <input type="checkbox" 
+                        name="spot"
+                        defaultChecked={spot}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleSpotUpdate(event.target.checked)}
+                    ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                    {total}
+                    {arrow != 0 &&
+                        <span>{total}</span>
+                    }
                 </div>
             </form>
         </div>
-  
     );
 }
