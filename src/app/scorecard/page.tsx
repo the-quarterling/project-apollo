@@ -52,8 +52,7 @@ export default function ScorecardStats()  {
       scorecard: calculateColumns(noOfTargets),
       firstHalfTotal: 0,
       secondHalfTotal: 0,
-      firstHalfSpots: 0,
-      secondHalfSpots: 0
+      spots: 0
     }) 
     window.location.href = `scorecard/${scorecardId}/edit`
   }

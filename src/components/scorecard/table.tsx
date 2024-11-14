@@ -14,10 +14,17 @@ interface TargetRowProps {
 
 export const ScorecardTable = ({ scId }: { scId: string }) => {
   const scorecards = useScorecardCardStore((state: any) => state.scorecards);
-  const result = scorecards.find((obj: any) => obj.value.id === scId);
+  const editScorecard = useScorecardCardStore((state: any) => state.editScorecard);
+  const result = scorecards.find((obj: any) => obj.id === scId);
+  
   if (!result) return null;
 
-  const scorecard = result.value.scorecard;
+  const scorecard = result.scorecard;
+  const firstHalfTotal = result.firstHalfTotal;
+
+  const getIndex = (target:number, col:number) => {
+    return scorecard.findIndex((a: any) => target == a.target && col == a.col);
+  };
 
   const firstHalf = scorecard.filter(
     (scorecard: TargetRowProps) => scorecard.col === 1
@@ -26,36 +33,40 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
     (scorecard: TargetRowProps) => scorecard.col === 2
   );
 
-  const handleArrowUpdate = (e: any, index: number) => {
-    result.value.scorecard[index].arrow = parseInt(e);
+  const handleArrowUpdate = (e: any, target: number, col: number) => {
+    const index = getIndex(target, col);
+    result.scorecard[index].arrow = parseInt(e);
+    editScorecard(scorecard, scId);
   };
 
-  const handleScoreUpdate = (e: any, index: number) => {
-    result.value.scorecard[index].score = parseInt(e);
+  const handleScoreUpdate = (e: any, target: number, col: number) => {
+    const index = getIndex(target, col);
+    result.scorecard[index].score = parseInt(e);
+    editScorecard(scorecard, scId);
   };
 
-  const handleSpotUpdate = (e: any, index: number) => {
-    result.value.scorecard[index].spot = e;
+  const handleSpotUpdate = (e: any, target: number, col: number) => {
+    const index = getIndex(target, col);
+    result.scorecard[index].spot = e;
+    editScorecard(scorecard, scId);
   };
 
-  // const calculateRunningTotal = (i:number) => {
-  // console.log(i);
-  // const tempArray = []
-  // let total;
+  const calculateRunningTotal = (target:number, col:number) => {
+    const index = getIndex(target, col);
+    const tempArray = [];
+    let total;
 
-  // for (let i = 0; i <= i; i++) {
-  //     tempArray.push(
-  //         scorecard[i].score
-  //     )
-  // }
+    for (let i = 0; i <= index; i++) {
+        tempArray.push(
+            scorecard[i].score
+        )
+    }
+    total = tempArray.reduce((acc, current) => {
+        return current + acc;
+    }, 0);
 
-  // total = tempArray.reduce((acc, current) => {
-  //     return current + acc;
-  // }, 0);
-
-  // return total;
-  // return col === 1 ? total : total - firstHalfScore;
-  // }
+    return col === 1 ? total : total - firstHalfTotal;
+}
 
   return (
     <div
@@ -111,7 +122,7 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     min="1"
                     defaultValue={target.arrow}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      handleArrowUpdate(event.target.value, index)
+                      handleArrowUpdate(event.target.value, target.target, target.col)
                     }
                   ></input>
                 </div>
@@ -122,7 +133,7 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     type="number"
                     defaultValue={target.score}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      handleScoreUpdate(event.target.value, index)
+                      handleScoreUpdate(event.target.value, target.target, target.col)
                     }
                   ></input>
                 </div>
@@ -132,12 +143,14 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     name="spot"
                     defaultChecked={target.spot}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      handleSpotUpdate(event.target.checked, index)
+                      handleSpotUpdate(event.target.checked, target.target, target.col)
                     }
                   ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                  {/* <span>{calculateRunningTotal(index)}</span> */}
+                    { target.arrow != 0 &&
+                        <span>{calculateRunningTotal(target.target, target.col)}</span>
+                    }
                 </div>
               </form>
             ))}
@@ -176,7 +189,9 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     type="number"
                     min="1"
                     defaultValue={target.arrow}
-                    //    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleArrowUpdate(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleArrowUpdate(event.target.value, target.target, target.col)
+                    }
                   ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
@@ -185,7 +200,9 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     name="score"
                     type="number"
                     defaultValue={target.score}
-                    //    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleScoreUpdate(event.target.value)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleScoreUpdate(event.target.value, target.target, target.col)
+                    }
                   ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
@@ -193,13 +210,15 @@ export const ScorecardTable = ({ scId }: { scId: string }) => {
                     type="checkbox"
                     name="spot"
                     defaultChecked={target.spot}
-                    // onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleSpotUpdate(event.target.checked)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleSpotUpdate(event.target.checked, target.target, target.col)
+                    }
                   ></input>
                 </div>
                 <div className="border w-1/5 h-20 text-center place-content-center">
-                  {/* {arrow != 0 && */}
-                  {/* <span>{total}</span> */}
-                  {/* } */}
+                    {target.arrow != 0 &&
+                        <span>{calculateRunningTotal(target.target, target.col)}</span>
+                    }
                 </div>
               </form>
             ))}
