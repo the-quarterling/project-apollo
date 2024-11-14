@@ -1,11 +1,14 @@
+'use client';
+
 import { useScorecardCardStore } from "@/app/scorecard/store";
 
-export default function ScorecardStats()  {
-    const firstHalfScore = useScorecardCardStore((state:any) => state.firstHalfScore)
-    const secondHalfScore = useScorecardCardStore((state:any) => state.secondHalfScore)
-    const spots = useScorecardCardStore((state:any) => state.spots)
-
-    const fullTotal = firstHalfScore + secondHalfScore
+export default function ScorecardStats({scId}:{scId: string})  {
+    const scorecards = useScorecardCardStore((state:any) => state.scorecards);
+    const result = scorecards.find((obj:any) => obj.value.id === scId);
+    const firstHalfScore = result.value.firstHalfTotal;
+    const secondHalfScore = result.value.secondHalfTotal;
+    const fullTotal = result.value.firstHalfTotal + result.value.secondHalfTotal;
+    const spots = result.value.spots;
 
     return (
         <>

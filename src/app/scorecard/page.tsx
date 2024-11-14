@@ -1,20 +1,12 @@
 "use client";
 
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { useScorecardCardStore } from "@/app/scorecard/store";
 import { nanoid } from 'nanoid';
 
 export default function ScorecardStats()  {
   const scorecardId = nanoid(5) + Date.now()
-
-  // commit values to zustand store
-  const storeSociety = useScorecardCardStore((state:any) => state.setSociety);
-  const storeCourse = useScorecardCardStore((state:any) => state.setCourse);
-  const storeCategory = useScorecardCardStore((state:any) => state.setCategory);
-  const storeBowstyle = useScorecardCardStore((state:any) => state.setBowstyle);
-  const storeDate = useScorecardCardStore((state:any) => state.setDate);
-  const storeNoOfTargets = useScorecardCardStore((state:any) => state.setNoOfTargets);
-  const storeScorecardID = useScorecardCardStore((state:any) => state.setScorecardID);
+  const addScorecard = useScorecardCardStore((state:any) => state.addScorecard);
 
   // set local values to pass to zustand store later
   const [society, setSociety] = useState<string>('');
@@ -24,19 +16,45 @@ export default function ScorecardStats()  {
   const [date, setDate] = useState<string>();
   const [noOfTargets, setNoOfTargets] = useState<number>(40);
 
+  const calculateColumns = (targets:number) => {
+    const tempScorecard = [];
+    
+    let col1Length;
+    let col2Length;
+    
+    if(targets % 2 == 0) {  
+        col1Length = targets / 2
+    } else {
+        col1Length = Math.ceil(targets / 2)
+    };
+
+    col2Length = targets - col1Length;
+
+    for (let i=0; i < col1Length; i++) {
+        tempScorecard.push({'col': 1, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, 'runningTotal': 0});
+    }
+
+    for (let i=0; i < col2Length; i++) {
+        tempScorecard.push({'col': 2, 'target': i + 1, 'arrow': 0, 'score': 0, 'spot': false, 'runningTotal': 0});
+    }
+
+    return tempScorecard
+}
+
   const createScorecard = () => {
-    storeSociety(society);
-    storeCourse(course);
-    storeCategory(category);
-    storeBowstyle(bowstyle);
-    storeDate(date);
-    storeNoOfTargets(noOfTargets);
-    storeScorecardID(scorecardId);
-
-    useScorecardCardStore.persist.setOptions({
-      name: `card-${scorecardId}`,
-    })
-
+    addScorecard({
+      id: scorecardId,
+      society: society,
+      course: course,
+      category: category,
+      bowstyle: bowstyle,
+      date: date,
+      scorecard: calculateColumns(noOfTargets),
+      firstHalfTotal: 0,
+      secondHalfTotal: 0,
+      firstHalfSpots: 0,
+      secondHalfSpots: 0
+    }) 
     window.location.href = `scorecard/${scorecardId}/edit`
   }
 

@@ -1,11 +1,21 @@
+'use client';
+
 import { useScorecardCardStore } from "@/app/scorecard/store";
 
-export default function ScorecardDetails()  {
-  const society = useScorecardCardStore((state:any) => state.society);
-  const course = useScorecardCardStore((state:any) => state.course);
-  const category = useScorecardCardStore((state:any) => state.category);
-  const bowstyle = useScorecardCardStore((state:any) => state.bowstyle);
-  const date = useScorecardCardStore((state:any) => state.date);
+export default function ScorecardDetails({scId}:{scId: string}) {
+  const scorecards = useScorecardCardStore((state:any) => state.scorecards);
+
+  const checkId = (obj:any) => {
+    return obj.value.id === scId
+  };
+
+  const result = scorecards.find(checkId);
+  
+  const society = result.value.society;
+  const course = result.value.course;
+  const category = result.value.category;
+  const bowstyle = result.value.bowstyle;
+  const date = result.value.date;
 
   return (
       <div className="px-7 my-5 text-white">
