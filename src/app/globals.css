@@ -10,10 +10,11 @@ body {
   font-style: normal;
   
   @media (prefers-color-scheme: dark) {
-    background-image: linear-gradient(to bottom, #3b0764, #7e22ce, #500724) ;
+    background-image: linear-gradient(to bottom, #3b0764, #7e22ce);
     background-repeat:no-repeat;
     background-size:100% 900px;
     background-color: #000;
+    color: #fff;
   }
 
   @media (prefers-color-scheme: light) {
@@ -21,7 +22,6 @@ body {
     background-repeat:no-repeat;
     background-size:100% 900px;
   }
-
 }
 
 input {
@@ -41,4 +41,65 @@ a {
 
 .footer {
   background: none;
+}
+
+.scorecard-tabs {
+  .react-tabs__tab-list {
+    margin: 0 auto;
+  }
+
+  .react-tabs__tab {
+    width: 44%;
+    margin: 1px 3%;
+    padding: 2rem 0;
+    text-align: center;
+    border: none;
+    border-radius: .5rem .5rem 0 0;
+  }
+
+  .react-tabs__tab:focus:after {
+      display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .react-tabs__tab-list {
+      border-bottom: 1px solid #fff;
+    }
+
+    .react-tabs__tab--selected {
+      background: #3b0764;
+      color: #fff;
+    }
+
+    .react-tabs__tab:hover,  
+    .react-tabs__tab:focus {
+      color: #fff;
+      background-color: #3b0764;
+    }
+    .react-tabs__tab:focus {
+      border: 1px solid #fff;
+      border-width: 1px 1px 0 1px;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    .react-tabs__tab-list {
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .react-tabs__tab--selected {
+      background: #7fe1d6;
+      color: #1f2937;
+    }
+
+    .react-tabs__tab:hover,  
+    .react-tabs__tab:focus {
+      color: #1f2937;
+      background-color: #7fe1d6;
+    }
+    .react-tabs__tab:focus {
+      border: 1px solid #1f2937;
+      border-width: 1px 1px 0 1px;
+    }
+  }
 }

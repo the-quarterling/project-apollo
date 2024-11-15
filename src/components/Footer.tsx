@@ -3,16 +3,16 @@ import Link from "next/link";
 export default function Footer()  {
     return (
         <footer className="footer navbar">
-            <div className="fixed z-50 w-full align-middle text-center h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+            <div className="fixed z-50 w-full align-middle text-center h-16 max-w-lg -translate-x-1/2 bg-teal-300 border border-gray-200 rounded-full bottom-4 left-1/2 dark:bg-purple-950 dark:border-gray-600">
                 <div className="grid h-full max-w-lg grid-cols-3 mx-auto w-full">
                     <button type="button" className="inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
-                        <svg className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-teal-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 mb-1 text-black dark:text-white group-hover:text-teal-600 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
                         </svg>
                         <span className="sr-only">Home</span>
                     </button>
                     <div className="flex items-center justify-center">
-                        <button type="button" className="inline-flex items-center justify-center w-10 h-10 font-medium bg-teal-300 rounded-full">
+                        <button type="button" className="inline-flex items-center justify-center w-10 h-10 font-medium bg-white rounded-full">
                             <svg className="w-4 h-4 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                             </svg>
@@ -20,7 +20,7 @@ export default function Footer()  {
                         </button>
                     </div>
                     <button type="button" className="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
-                        <svg className="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-teal-600 dark:group-hover:text-blue-500" aria-hidden="true"  viewBox="0 0 28 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-5 h-5 mb-1 text-black dark:text-white group-hover:text-teal-600 dark:group-hover:text-white" aria-hidden="true"  viewBox="0 0 28 28" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.3 12C12.1343 12 12 12.1343 12 12.3V12.7C12 12.8657 12.1343 13 12.3 13H19.7C19.8657 13 20 12.8657 20 12.7V12.3C20 12.1343 19.8657 12 19.7 12H12.3Z"/>
                             <path d="M12 20.3C12 20.1343 12.1343 20 12.3 20H19.7C19.8657 20 20 20.1343 20 20.3V20.7C20 20.8657 19.8657 21 19.7 21H12.3C12.1343 21 12 20.8657 12 20.7V20.3Z"/>
                             <path d="M12.3 16C12.1343 16 12 16.1343 12 16.3V16.7C12 16.8657 12.1343 17 12.3 17H19.7C19.8657 17 20 16.8657 20 16.7V16.3C20 16.1343 19.8657 16 19.7 16H12.3Z"/>
